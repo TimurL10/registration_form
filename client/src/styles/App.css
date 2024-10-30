@@ -1,0 +1,55 @@
+﻿#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+th, td {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.left-menu, .right-menu {
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    overflow-y: auto;
+}
+
+.left-menu {
+    left: 0;
+    background-color: whitesmoke;
+}
+
+.right-menu {
+    right: 0;
+    background-color: whitesmoke;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.main {
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+.main-content {
+    margin-left: 200px;
+    margin-right: 200px;
+    padding: 20px;
+}
+
+.left-menu ul, .right-menu ul {
+    list-style-type: none; /* Убирает маркеры списка */
+    padding: 0; /* Убирает отступы внутри списка */
+    margin: 0; /* Убирает внешние отступы списка */
+}
+
+.left-menu li, .right-menu li {
+    padding: 8px; /* Добавляет немного отступа для каждого пункта списка */
+}

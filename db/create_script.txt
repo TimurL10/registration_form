@@ -1,0 +1,38 @@
+
+CREATE TABLE Company (
+    CompanyId SERIAL PRIMARY KEY,
+    CompanyName TEXT NOT NULL,
+    CompanyDescription TEXT,
+    CompanyPhone TEXT NOT NULL,
+    CompanyEmail TEXT,
+    CompanyWebSite TEXT,
+    CompanyAddress TEXT,
+    CreationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ContactId INT
+);
+
+CREATE TABLE Contacts (
+    ContactId SERIAL PRIMARY KEY,
+    Name TEXT NOT NULL,
+    FamilyName TEXT NOT NULL,
+    Email TEXT,
+    PrimaryPhone TEXT NOT NULL,
+    SecondaryPhone TEXT,
+    AdditionalPhone TEXT,
+    Note TEXT,
+    CreationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CompanyId INT REFERENCES Company(CompanyId) ON DELETE NO ACTION
+);
+
+CREATE TABLE Tickets (
+    id SERIAL PRIMARY KEY,
+    TicketName TEXT NOT NULL,
+    EventStartDate TIMESTAMP NOT NULL,
+    NextContactDate TIMESTAMP,
+    Description TEXT,
+    EventEndDate TIMESTAMP NOT NULL,
+    EventType TEXT,
+    CompanyId INT NOT NULL REFERENCES Company(CompanyId) ON DELETE NO ACTION,
+    CreationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    EventStatus TEXT
+);
