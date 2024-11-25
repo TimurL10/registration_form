@@ -7,8 +7,7 @@ CREATE TABLE Company (
     CompanyEmail TEXT,
     CompanyWebSite TEXT,
     CompanyAddress TEXT,
-    CreationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    ContactId INT
+    CreationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMPs
 );
 
 CREATE TABLE Contacts (

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import CompanyForm from './CompanyForm';
+import './styles/MainList.css';
 
 function Company() {
     const [companies, setCompanies] = useState([]);
@@ -60,7 +61,8 @@ function Company() {
     return (
         <div>
             <h1>Список Компаний</h1>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+            <hr style={{ border: '1px solid #ccc',  marginBottom: '10px' }} /> {/* Разделительная линия */}
+            <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '20px' }}>
                 <button onClick={handleNewCompany}>Новая Компания</button>
                 <div>
                     <button onClick={() => setShowDropdown(!showDropdown)}>Действие</button>

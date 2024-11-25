@@ -1,14 +1,38 @@
 ﻿import React, { useState, useEffect } from 'react';
-import './styles/TicketForm.css'; 
+//import '.src/styles/TicketForm.css'; 
 import DatePicker from 'react-datepicker';
+import CompanySearch from './CompanySearch';
+import axios from 'axios';
 //import "react-datepicker/dist/react-datepicker.css";
 //import { register } from 'react-datepicker'; // Импортируем функции регистрации
 //import { ru } from 'date-fns/locale'; // Импортируем локализацию
 
 //register('ru', ru);
 
-function TicketForm({ saveTicket, ticketData = { TicketName: '', company: '', description: '', EventStartDate: '', EventEndDate: '', NextContactDate: '', contact: '' } }) {
+function TicketForm({ saveTicket, ticketData = { ticketname: '', companyid: '', description: '', eventstartdate: '', eventenddate: '', nextcontactdate: '', contact: '',eventstatus:'' } }) {
     const [ticket, setTicket] = useState(ticketData);
+    const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+    const [contacts, setContacts] = useState([]);
+
+    const fetchContacts = async (companyid) => {
+        try {
+            const response = await axios.get(`http://localhost:5000/api/contacts/${companyid}`)
+            setContacts(response.data);
+        }
+        catch (error){
+            console.error("Ошибка при загрузке контактов:", error);
+            setContacts([]); 
+        }
+    };
+ 
+
+
+     // Функция для обработки выбора компании
+     const handleSelectCompany = (companyid) => {
+        setSelectedCompanyId(companyid); // Обновляем состояние с ID выбранной компании
+        fetchContacts(companyid);
+        console.log(`Выбрана компания с ID: ${companyid}`);
+    };
 
     useEffect(() => {
         setTicket(ticketData); // Обновляем состояние при изменении ticketData
@@ -21,7 +45,11 @@ function TicketForm({ saveTicket, ticketData = { TicketName: '', company: '', de
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        saveTicket(ticket);
+        const new_ticket = { 
+            ...ticket, 
+            companyid: selectedCompanyId // Добавляем поле company
+        };
+        saveTicket(new_ticket);
     };    
 
     return (
@@ -31,19 +59,15 @@ function TicketForm({ saveTicket, ticketData = { TicketName: '', company: '', de
                     Название заявки:
                     <input
                         type="text"
-                        name="TicketName"
-                        value={ticket.TicketName}
+                        name="ticketname"
+                        value={ticket.ticketname}
                         onChange={handleChange}
                     />
                 </label>
                 <label>
-                    Компания:
-                    <input
-                        type="text"
-                        name="company"
-                        value={ticket.company}
-                        onChange={handleChange}
-                    />
+                    Выберите компанию:
+                        <CompanySearch onSelectCompany={handleSelectCompany} /> 
+                        {selectedCompanyId && <p>Выбранная компания ID: {selectedCompanyId}</p>}
                 </label>
                 <label>
                     Описание:
@@ -57,8 +81,8 @@ function TicketForm({ saveTicket, ticketData = { TicketName: '', company: '', de
                     Начало мероприятия:
                     <input
                         type="datetime-local"
-                        name="EventEndDate"
-                        value={ticket.EventEndDate}
+                        name="eventstartdate"
+                        value={ticket.eventstartdate}
                         onChange={handleChange}
                     />
                 </label>
@@ -66,8 +90,8 @@ function TicketForm({ saveTicket, ticketData = { TicketName: '', company: '', de
                     Конец мероприятия:
                     <input
                         type="datetime-local"
-                        name="EventEndDate"
-                        value={ticket.EventEndDate}
+                        name="eventenddate"
+                        value={ticket.eventenddate}
                         onChange={handleChange}
                     />
                 </label>
@@ -75,32 +99,43 @@ function TicketForm({ saveTicket, ticketData = { TicketName: '', company: '', de
                     Дата следующего контакта:
                     <input
                         type="datetime-local"
-                        name="NextContactDate"
-                        value={ticket.NextContactDate}
+                        name="nextcontactdate"
+                        value={ticket.nextcontactdate}
                         onChange={handleChange}
                     />
                 </label>
-                <label>
+                <label >
                     Контакт:
-                    <input
+                    <select
                         type="text"
                         name="contact"
                         value={ticket.contact}
                         onChange={handleChange}
-                    />
+                        style={{ width: "100%" }}
+                    >  
+                    <option value=""></option>
+                    {contacts.map((contact) => (
+                        <option key={contact.contactid} value={contact.contactid}>
+                            {contact.name}
+                        </option>
+                    ))}
+                </select>
                 </label>
                 <label>
                     Статус:
                     <select
-                        name="EventStatus"
-                        value={ticket.EventStatus}
+                        name="eventstatus"
+                        value={ticket.eventstatus}
                         onChange={handleChange}
+                        style={{ width: "100%" }}
                     >
+                        <option value=""></option>
                         <option value="Закончено">Закончено</option>
                         <option value="Новое">Новое</option>
                         <option value="В работе">В работе</option>
                     </select>
                 </label>
+
 
                 <button type="submit">Сохранить</button>
             </form>

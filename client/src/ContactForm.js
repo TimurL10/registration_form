@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './styles/ContactForm.css';
+//import './styles/ContactForm.css';
+//import './styles/MainList.css';
 
 
-const ContactForm = ({ existingContact, onSave, showAdditionalFields }) => {
+const ContactForm = ({ existingContact, saveContact, showAdditionalFields }) => {
     const [contact, setContact] = useState({
         name: '',
         email: '',
@@ -26,7 +27,7 @@ const ContactForm = ({ existingContact, onSave, showAdditionalFields }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSave(contact);
+        saveContact(contact);
     };
 
     return (
@@ -54,11 +55,13 @@ const ContactForm = ({ existingContact, onSave, showAdditionalFields }) => {
                 <label htmlFor="address">Адрес:</label>
                 <input type="text" id="address" name="address" value={contact.address} onChange={handleChange}/>
 
+                <label htmlFor="companyname">Компания:</label>
+                <input type="text" id="companyid" name="companyid" value={contact.companyid} onChange={handleChange}></input>
+
                 <label htmlFor="note">Заметка:</label>
                 <textarea id="note" name="note" value={contact.note} onChange={handleChange}></textarea>
 
-                <label htmlFor="companyname">Компания:</label>
-                <textarea id="companyid" name="companyid" value={contact.companyid} onChange={handleChange}></textarea>
+                
 
                 <button type="submit">Сохранить</button>
             </form>

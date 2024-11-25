@@ -1,7 +1,8 @@
 // src/CompanyForm.js
 
 import React, { useState, useEffect } from 'react';
-import './styles/CompanyForm.css';
+//import './styles/CompanyForm.css';
+//import './styles/MainList.css';
 
 function CompanyForm({ saveCompany, companyData, showAdditionalFields, setShowAdditionalFields }) {
     const [company, setCompany] = useState(companyData);

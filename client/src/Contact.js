@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ContactForm from './ContactForm';
+import './styles/MainList.css';
 
 function Contact(){
     const [contacts, setContacts] = useState([]);
@@ -26,6 +27,10 @@ function Contact(){
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        fetchContacts();
+    }, []);
 
     const handleNewContact = () => {
         setSelectedContact({name:'',familyname:'',email:'',primaryphone:'',secondaryphone:'',additionalphone:'',note:'',companyid:'',companyname:''});
@@ -55,7 +60,8 @@ function Contact(){
     return (
         <div>
             <h1>Список Контактов</h1>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+            <hr style={{ border: '1px solid #ccc', marginBottom: '10px' }} /> {/* Разделительная линия */}
+            <div style={{ display: 'flex', marginBottom: '20px' }}>
                 <button onClick={handleNewContact}>Новый Контакт</button>
                 <div>
                     <button onClick={() => setShowDropdown(!showDropdown)}>Действие</button>
@@ -80,7 +86,6 @@ function Contact(){
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Название</th>
                             <th>Фамилия</th>
                             <th>Email</th>
@@ -101,7 +106,6 @@ function Contact(){
                                 <td>{item.secondaryphone}</td>
                                 <td>{item.additionalphone}</td>
                                 <td>{item.note}</td>
-                                <td>{item.companyid}</td>
                                 <td>{item.companyname}</td>
                             </tr>
                         ))}

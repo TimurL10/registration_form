@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import TicketForm from './TicketForm';
+import './styles/MainList.css';
 
 function Ticket() {
     const [tickets, setTickets] = useState([]);
@@ -24,6 +25,10 @@ function Ticket() {
             setIsLoading(false);
         }
     };
+
+    const onSelectCompany = () =>{
+        return;
+    }
     
     const saveTicket = async (ticketData) => {
         const method = ticketData.id ? 'PUT' : 'POST';
@@ -49,16 +54,16 @@ function Ticket() {
     }, []);
 
     const handleNewTicket = () => {
-        setSelectedTicket({ TicketName: '', EventStartDate: '', NextContactDate: '', description: '', EventEndDate: '', EventType: '' });
+        setSelectedTicket({ ticketname: '', eventstartdate: '', nextcontactdate: '', description: '', eventenddate: '', eventtype: '' });
         setShowForm(true);
     };    
 
     return (
         <div>
-            <h1 style={{ textAlign: 'left', margin: '0 0 10px 0' }}>Список заявок</h1>
+            <h1>Список Заявок</h1>
             <hr style={{ border: '1px solid #ccc', marginBottom: '10px' }} /> {/* Разделительная линия */}
             
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+            <div style={{ display: 'flex',  justifyContent: 'flex-start', marginBottom: '20px' }}>
                 <button onClick={handleNewTicket}>Новая Заявка</button>
                 <div>
                     <button onClick={() => setShowDropdown(!showDropdown)}>Действие</button>
@@ -80,10 +85,10 @@ function Ticket() {
                         <tr>
                             <th>#</th>
                             <th>Название заявки</th>
-                            <th>Начало события</th>
+                            <th>Начало события</th>                           
+                            <th>Конец события</th>
                             <th>Дата следующего контакта</th>
-                            <th>Description</th>
-                            <th>EventEndDate</th>
+                            <th>Описаниие</th>
                             <th>EventType</th>
                         </tr>
                     </thead>
@@ -91,12 +96,12 @@ function Ticket() {
                         {tickets.map(item => (
                             <tr key={item.id} onClick={() => { setSelectedTicket(item); setShowForm(true); }}>
                                 <td>{item.id}</td>
-                                <td>{item.TicketName}</td>
-                                <td>{item.EventStartDate}</td>
-                                <td>{item.NextContactDate}</td>
-                                <td>{item.Description}</td>
-                                <td>{item.EventEndDate}</td>
-                                <td>{item.EventType}</td>
+                                <td>{item.ticketname}</td>
+                                <td>{item.eventstartdate}</td>
+                                <td>{item.eventenddate}</td>                             
+                                <td>{item.nextcontactdate}</td>
+                                <td>{item.description}</td>
+                                <td>{item.eventtype}</td>                                
                             </tr>
                         ))}
                     </tbody>

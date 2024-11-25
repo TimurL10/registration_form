@@ -1,6 +1,5 @@
 ﻿#root {
-    max-width: 1280px;
-    margin: 0 auto;
+    /*max-width: 1280px;*/
     padding: 2rem;
     text-align: center;
 }
@@ -11,19 +10,21 @@ th, td {
 }
 
 .left-menu, .right-menu {
-    width: 200px;
-    height: 100vh;
     position: fixed;
     top: 0;
     overflow-y: auto;
 }
 
 .left-menu {
+    width: 200px;
+    height: 100vh;
     left: 0;
     background-color: whitesmoke;
 }
 
 .right-menu {
+    width: 100px;
+    height: 100vh;
     right: 0;
     background-color: whitesmoke;
 }
