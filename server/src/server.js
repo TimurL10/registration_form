@@ -18,6 +18,28 @@ let tickets = [];
 
 dbrep.load_config(); 
 
+
+app.post('/api/login', async(req,res) => {
+    try {
+        await dbrep.loginUser(req,res);
+    }
+    catch(e) {
+        res.status(500).json({message: 'Internal Server Error'})
+    }
+
+
+});
+
+app.post('/api/register',async(req,res) => {
+    try{
+        await dbrep.registerUser(req,res)
+    }
+    catch(e) {
+        res.status(500).json({message: 'Internal Server Error'})
+    }
+})
+
+
 // Заявки
 
 app.get('/api/tickets', async(req, res) => {

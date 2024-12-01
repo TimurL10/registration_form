@@ -1,0 +1,12 @@
+.left-menu ul li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit; /* Использовать цвет по умолчанию */
+}
+
+.left-menu ul li a img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}

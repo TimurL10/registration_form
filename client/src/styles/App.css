@@ -13,20 +13,22 @@ th, td {
     position: fixed;
     top: 0;
     overflow-y: auto;
+    padding-left: 20px;
+    padding-top: 30px;
 }
 
 .left-menu {
     width: 200px;
     height: 100vh;
     left: 0;
-    background-color: whitesmoke;
+    background-color: #f9f9f9;
 }
 
 .right-menu {
     width: 100px;
     height: 100vh;
     right: 0;
-    background-color: whitesmoke;
+    background-color: #f9f9f9;
 }
 
 .app-container {
@@ -36,13 +38,15 @@ th, td {
 
 .main {
     margin-left: 200px;
-    margin-right: 200px;
+    margin-right: 200px; 
 }
 
 .main-content {
     margin-left: 200px;
     margin-right: 200px;
     padding: 20px;
+    background-color: white;
+
 }
 
 .left-menu ul, .right-menu ul {
@@ -52,5 +56,5 @@ th, td {
 }
 
 .left-menu li, .right-menu li {
-    padding: 8px; /* Добавляет немного отступа для каждого пункта списка */
+    padding: 16px 8px; /* Увеличен отступ сверху и снизу */
 }

@@ -1,0 +1,146 @@
+/* Основной контейнер */
+.centered-box {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px; /* Увеличили максимальную ширину */
+    width: 90%; /* Ширина адаптивна */
+    padding: 30px; /* Внутренний отступ увеличен */
+    box-sizing: border-box; /* Включаем отступы в расчёт ширины */
+}
+
+
+/* Заголовок */
+.login-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Подзаголовок */
+.login-subtitle {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Уведомление */
+.alert {
+    background-color: #fff8db;
+    border: 1px solid #ffd700;
+    border-radius: 5px;
+    padding: 10px;
+    color: #444;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+/* Разделитель */
+.divider {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+/* Форма */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    background-color: #f9f9f9;
+}
+
+.form-group input:focus {
+    border-color: #1877f2;
+    outline: none;
+    background-color: #fff;
+}
+
+/* Кнопка входа */
+.login-btn {
+    padding: 12px;
+    background-color: #1877f2;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.login-btn:hover {
+    background-color: #155dbb;
+}
+
+/* Ошибка */
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Блок действий */
+.login-actions {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.login-actions .action-btn {
+    background-color: transparent;
+    color: #1877f2;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.login-actions .action-btn:hover {
+    text-decoration: underline;
+    color: #155dbb;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 480px) {
+    .centered-box {
+        padding: 15px;
+    }
+
+    .login-title {
+        font-size: 1.3rem;
+    }
+
+    .login-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .login-btn {
+        font-size: 0.9rem;
+    }
+}

@@ -1,5 +1,7 @@
 let fs = require('fs');
 const { Client } = require('pg');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 var pg_client_to = null;
 var dwh_properties = [];
@@ -261,11 +263,71 @@ async function get_companies() {
         console.warn(new Date().toISOString(), 'DbRepository.js', 'get_companies()', e.stack);
         throw new Error(e)
     }
-
-
 }
 
+const registerUser = async (req, res) => {
+    const { username, email, password } = req.body;
 
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        const result = await pg_client_to.query(
+            'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING *',
+            [username, email, passwordHash]
+        );
+
+        res.status(201).json({ message: 'User created', user: result.rows[0] });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error registering user' });
+    }
+};
+
+const loginUser = async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        const result = await pg_client_to.query('SELECT * FROM users WHERE username = $1', [username]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const user = result.rows[0];
+        const isMatch = await bcrypt.compare(password, user.password_hash);
+
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, 'SECRET_KEY', {
+            expiresIn: '1h',
+        });
+
+        res.cookie('token', token, { httpOnly: true }); // Сохраняем токен в куки
+        res.status(200).json({ message: 'Logged in successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error logging in' });
+    }
+};
+
+const authenticateToken = (req, res, next) => {
+    const token = req.cookies.token;
+
+    if (!token) {
+        return res.status(403).json({ message: 'Not authorized' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, 'SECRET_KEY');
+        req.user = decoded;
+        next();
+    } catch (error) {
+        res.status(401).json({ message: 'Invalid token' });
+    }
+};
 
 
 module.exports = {
@@ -276,6 +338,8 @@ module.exports = {
     save_new_contact,
     get_tickets,
     load_config,
-    get_company_contacts
+    get_company_contacts,
+    loginUser,
+    registerUser
     // Другие экспортируемые функции
 };

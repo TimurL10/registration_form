@@ -1,0 +1,122 @@
+.register-container {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px; /* Увеличенная ширина */
+    width: 90%; /* Адаптивная ширина */
+    padding: 30px; /* Внутренний отступ */
+    box-sizing: border-box; /* Включаем padding в расчет ширины */
+}
+
+/* Заголовок формы */
+.register-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Подзаголовок */
+.register-subtitle {
+    text-align: center;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Разделитель */
+.divider {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+/* Форма */
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%; /* Форма занимает всю ширину контейнера */
+    max-width: 400px; /* Ограничение ширины формы */
+    margin: 0 auto; /* Центрирование внутри контейнера */
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    background-color: #f9f9f9;
+    box-sizing: border-box; /* Для корректного учета ширины */
+}
+
+.form-group input:focus {
+    border-color: #1877f2;
+    outline: none;
+    background-color: #fff;
+}
+
+/* Кнопка регистрации */
+.register-btn {
+    padding: 12px;
+    background-color: #1877f2;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.register-btn:hover {
+    background-color: #155dbb;
+}
+
+/* Ошибка и успешное сообщение */
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.success-message {
+    color: green;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 480px) {
+    .register-container {
+        padding: 20px;
+    }
+
+    .register-title {
+        font-size: 1.5rem;
+    }
+
+    .register-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .register-btn {
+        font-size: 0.9rem;
+    }
+}
