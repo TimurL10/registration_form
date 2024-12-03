@@ -6,11 +6,7 @@ const jwt = require('jsonwebtoken');
 var pg_client_to = null;
 var dwh_properties = [];
 
-const { createClient } = require('@supabase/supabase-js');
-const supabaseUrl = 'https://yzggczwizhgltaquqdac.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6Z2djendpemhnbHRhcXVxZGFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAzODA0MDEsImV4cCI6MjA0NTk1NjQwMX0._CTmj7Mt3BnwNiPUJi7FSHTu8gSr3z8WokFZLlcz0Hw';
-const supabase = createClient(supabaseUrl, supabaseKey)
-//
+
 
 async function load_config() {
     try {
