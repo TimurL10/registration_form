@@ -6,6 +6,11 @@ var dbrep = require('./DbRepository');
 const app = express();
 const PORT = 5000;
 
+// Маршрут для корневого пути
+app.get('/', (req, res) => {
+    res.send('Hello, World!');
+});
+
 let companies = [];
 
 // Используем CORS
