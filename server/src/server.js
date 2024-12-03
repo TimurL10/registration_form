@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors'); // Импортируем пакет cors
 var dbrep = require('./DbRepository');
+const path = require('path');
 
 const app = express();
 const PORT = 5000;
@@ -9,6 +10,14 @@ const PORT = 5000;
 // Маршрут для корневого пути
 app.get('/', (req, res) => {
     res.send('Hello, World!');
+});
+
+// Обслуживание статических файлов React
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Обработка остальных запросов и отправка index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 let companies = [];
