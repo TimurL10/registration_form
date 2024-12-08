@@ -2,6 +2,7 @@ let fs = require('fs');
 const { Client } = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const path = reqire('path')
 
 var pg_client_to = null;
 var dwh_properties = [];
@@ -14,24 +15,34 @@ async function load_config() {
         console.log(new Date().toISOString(), 'load_config()', 'Текущая папка', p);
         let fl_settings = null;
         let fl_settings_path = null;
-        if (process.platform == 'win32') {
+        /*if (process.platform == 'win32') {
             let p1 = p.indexOf('\\dwh\\connectors\\');
             let s = p.substring(0, p1);
             p1 = s.lastIndexOf('\\');
             s = s.substring(p1 + 1, s.length);
             fl_settings_path = 'C:\\Users\\Lumelskiy.T\\my-app\\\mycrmapp\\' + s + '\\service\\dwh.properties';
-        }
-        console.log(new Date().toISOString(), 'dbRepository.js', 'load_config()', 'Путь к файлу dwh.properties', fl_settings_path);
-        fl_settings = fs.readFileSync(fl_settings_path);
-        fl_settings = fl_settings.toString().split('\n');
-        for (var r in fl_settings) {
-            let s = fl_settings[r];
-            s = s.trim();
-            if (s.length > 0) {
-                p = s.indexOf('=');
-                dwh_properties[s.substring(0, p)] = s.substring(p + 1, s.length);
-            };
-        };
+        } */
+
+        let p1 = p.indexOf('\\dwh\\connectors\\');
+        let s = p.substring(0, p1);
+        p1 = s.lastIndexOf('\\');
+        s = s.substring(p1 + 1, s.length);
+
+        // Формируем путь к файлу конфигурации
+        fl_settings_path = path.join(__dirname, '../', '../', 'service', 'dwh.properties');
+
+        fl_settings = fs.readFileSync(fl_settings_path, 'utf-8');
+
+        fl_settings.split('\n').forEach((line) => {
+            let s = line.trim();
+            if (s.length > 0 && s.includes('=')) { 
+                let p = s.indexOf('='); 
+                let key = s.substring(0, p).trim(); 
+                let value = s.substring(p + 1).trim(); 
+                dwh_properties[key] = value; 
+            }
+        });
+
 
         pg_client_to = createClient(supabaseUrl, supabaseKey)
 
