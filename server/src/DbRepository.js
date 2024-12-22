@@ -1,64 +1,33 @@
-let fs = require('fs');
 const { Client } = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const path = reqire('path')
-
+const dotenv = require('dotenv').config({ path: '../../service/.env.prod' });
 var pg_client_to = null;
-var dwh_properties = [];
+
 
 
 
 async function load_config() {
     try {
-        let p = __dirname;
-        console.log(new Date().toISOString(), 'load_config()', 'Текущая папка', p);
-        let fl_settings = null;
-        let fl_settings_path = null;
-        /*if (process.platform == 'win32') {
-            let p1 = p.indexOf('\\dwh\\connectors\\');
-            let s = p.substring(0, p1);
-            p1 = s.lastIndexOf('\\');
-            s = s.substring(p1 + 1, s.length);
-            fl_settings_path = 'C:\\Users\\Lumelskiy.T\\my-app\\\mycrmapp\\' + s + '\\service\\dwh.properties';
-        } */
-
-        let p1 = p.indexOf('\\dwh\\connectors\\');
-        let s = p.substring(0, p1);
-        p1 = s.lastIndexOf('\\');
-        s = s.substring(p1 + 1, s.length);
-
-        // Формируем путь к файлу конфигурации
-        fl_settings_path = path.join(__dirname, '../', '../', 'service', 'dwh.properties');
-
-        fl_settings = fs.readFileSync(fl_settings_path, 'utf-8');
-
-        fl_settings.split('\n').forEach((line) => {
-            let s = line.trim();
-            if (s.length > 0 && s.includes('=')) { 
-                let p = s.indexOf('='); 
-                let key = s.substring(0, p).trim(); 
-                let value = s.substring(p + 1).trim(); 
-                dwh_properties[key] = value; 
-            }
-        });
-
-
-        pg_client_to = createClient(supabaseUrl, supabaseKey)
-
         
         pg_client_to = new Client({
-            host: dwh_properties['db.host'],
-            port: dwh_properties['db.port'],
-            database: dwh_properties['db.name'],
-            user: dwh_properties['db.user.login'],
-            password: dwh_properties['db.user.password'],
+            host: process.env.PGHOST,
+            port: process.env.PORT,
+            database: process.env.PGDATABASE,
+            user: process.env.PGUSER,
+            password: process.env.PGPASSWORD,
             statement_timeout: 0
         });
 
-        await pg_client_to.connect();
-        
-        //var res = await pg_conf.query('select * from test_tabl');
+
+        pg_client_to.connect()
+         .then(()=>{
+            console.log('Connected to the database.');
+         })
+         .catch((err)=>{
+            console.error('Error Connecting to the database.',err.stack);
+            
+         });        
 
     }
     catch (e) {
