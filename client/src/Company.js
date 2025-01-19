@@ -18,7 +18,7 @@ function Company() {
     const fetchCompanies = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch('http://localhost:5000/api/companies');
+            const response = await fetch('http://product-key.ru:5000/api/companies');
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
