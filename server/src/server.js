@@ -23,7 +23,9 @@ app.get('*', (req, res) => {
 let companies = [];
 
 // Используем CORS
-app.use(cors());
+app.use(cors({
+    origin: 'https://product-key.ru',  
+}));
 
 // Middleware для парсинга JSON-запросов
 app.use(bodyParser.json());
