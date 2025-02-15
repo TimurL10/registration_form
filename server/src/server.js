@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors'); // Импортируем пакет cors
 var dbrep = require('./DbRepository');
 const path = require('path');
-
+const https = require('https');
 const app = express();
 const PORT = 5000;
 
@@ -22,10 +22,12 @@ app.get('*', (req, res) => {
 
 let companies = [];
 
-// Используем CORS
 app.use(cors({
-    origin: 'https://product-key.ru',methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: 'https://product-key.ru',  // Разрешаем только этот домен
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  // Разрешаем методы
+    allowedHeaders: ['Content-Type', 'Authorization'], // Разрешаем определенные заголовки
 }));
+
 
 // Middleware для парсинга JSON-запросов
 app.use(bodyParser.json());
@@ -170,6 +172,15 @@ app.delete('/api/contacts/:id', (req, res) => {
 });
 
 // Запуск сервера
-app.listen(PORT, '0.0.0.0',() => {
+/*app.listen(PORT, '0.0.0.0',() => {
     console.log(`Server is running on https://0.0.0.0:${PORT}`);
-});
+});*/
+
+const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/product-key.ru/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/product-key.ru/cert.pem')
+  };
+  
+  https.createServer(options, app).listen(5000, () => {
+    console.log('Server running on https://0.0.0.0:5000');
+  });
