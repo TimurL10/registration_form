@@ -42,7 +42,7 @@ function Company() {
 
     const saveCompany = async (companyData) => {
         const method = companyData.id ? 'PUT' : 'POST';
-        const endpoint = companyData.id ? `http://localhost:5000/api/companies/${companyData.id}` : 'http://localhost:5000/api/companies';
+        const endpoint = companyData.id ? `https://product-key.ru:5000/api/companies/${companyData.id}` : 'https://product-key.ru:5000/api/companies';
 
         const response = await fetch(endpoint, {
             method: method,
