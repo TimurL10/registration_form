@@ -24,7 +24,7 @@ let companies = [];
 
 // Используем CORS
 app.use(cors({
-    origin: 'https://product-key.ru',  
+    origin: 'https://product-key.ru',methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
 // Middleware для парсинга JSON-запросов
