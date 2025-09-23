@@ -35,8 +35,6 @@ async function initPgClient() {
 
         await pg_conf.connect();
 
-        await pg_conf.query('create table test1(id integer);');
-
         pg_conf.on('error',(err) => {
             console.log(err);
         });
