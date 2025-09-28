@@ -1,5 +1,8 @@
 import { useState } from "react";
 import './Index.css';
+import { Link,useNavigate} from "react-router-dom";
+import { setSelected } from "./optionsSlice";
+import {useSelector} from "react-redux";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -7,6 +10,10 @@ export default function ContactForm() {
     email: "",
     message: ""
   });
+
+  const options = useSelector((state) => state.options.selected);
+
+  const hasOptions = Array.isArray(options) && options.length > 0;
 
   // обработка изменения любого поля
   const handleChange = (e) => {
@@ -35,31 +42,62 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">      
-      <form className="flex flex-col gap-3 max-w-sm w-full bg-white p-6 rounded shadow">        
+  <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="w-full max-w-md flex flex-col items-center gap-6">
+      {/* Баннер */}
+      <div className="relative w-full h-60 md:h-65 rounded-2xl overflow-hidden">
+        <img
+          src="/register-now-banner.png"   
+          className="absolute inset-0 w-full h-full object-cover"
+        />       
+        <div className="absolute bottom-3 left-4 text-white text-2xl font-semibold tracking-wide">
+        </div>
+      </div>
+
+      {/* Форма */}
+      <form className="flex flex-col gap-3 w-full bg-white p-6 rounded-2xl shadow">
+      {hasOptions ? (options.map((opt, idx) => (
         <input
+          key={idx}
           type="text"
-          name="name"
-          placeholder="Ваше имя"
+          name={opt}
+          placeholder={opt}
           className="border rounded p-2"
         />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          className="border rounded p-2"
-        />
-        <textarea
-          name="message"
-          placeholder="Сообщение"
-          className="border rounded p-2"
-        />
+      ))) :
+      (
+        <>
+          <input
+            type="text"
+            name="name"
+            placeholder="Ваше имя"
+            className="border rounded p-2"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="border rounded p-2"
+          />
+          <textarea
+            name="message"
+            placeholder="Сообщение"
+            className="border rounded p-2"
+          />
+        </>
+      )
+      }
         <button type="submit" className="bg-blue-500 text-white p-2 rounded">
           Отправить
         </button>
       </form>
+      <p>
+      <Link to="/configuration">Настроить форму</Link>
+      </p>
     </div>
-  );
+  </div>
+);
+
 }
 
 
