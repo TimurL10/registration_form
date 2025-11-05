@@ -33,6 +33,38 @@ async function initPgClient() {
     });
     return pg_conf;
 }
+// сохранить/обновить конфиг
+app.post("/api/form-config", async (req, res) => {
+    const { companyId, fields } = req.body;
+    if (!companyId || !Array.isArray(fields)) {
+        return res.status(400).json({ error: "Bad request" });
+    }
+    try {
+        const { rows } = await pool.query(`INSERT INTO form_config (company_id, fields)
+       VALUES ($1, $2)
+       ON CONFLICT (company_id) DO UPDATE SET fields = EXCLUDED.fields, updated_at = now()
+       RETURNING *`, [companyId, JSON.stringify(fields)]);
+        res.json(rows[0]);
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "DB error" });
+    }
+});
+// получить конфиг для формы
+app.get("/api/form-config", async (req, res) => {
+    const { companyId } = req.query;
+    if (!companyId)
+        return res.status(400).json({ error: "companyId required" });
+    try {
+        const { rows } = await pool.query("SELECT fields FROM form_config WHERE company_id=$1", [companyId]);
+        res.json(rows[0] ? rows[0].fields : []);
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "DB error" });
+    }
+});
 initPgClient();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Backend listening on ${PORT}`));

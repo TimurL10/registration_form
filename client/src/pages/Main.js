@@ -1,8 +1,8 @@
-import { useState } from "react";
-import './Index.css';
+import { useState, useEffect } from "react";
+import '../Index.css';
 import { Link,useNavigate} from "react-router-dom";
-import { setSelected } from "./optionsSlice";
-import {useSelector} from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
+import Spinner from "../components/Spinner.jsx";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -11,22 +11,34 @@ export default function ContactForm() {
     message: ""
   });
 
-  const options = useSelector((state) => state.options.selected);
-
+  const v_companyId = useSelector((state) => state.options.companyId);
+  const [options, setOptions] = useState();
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  //const options = useSelector((state) => state.options.selected);
   const hasOptions = Array.isArray(options) && options.length > 0;
-
   // обработка изменения любого поля
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  useEffect(() => {
+  (async () => {
+    const res = await fetch(`http://localhost:4000/api/form-config?companyId=${v_companyId}`);
+    const fields = await res.json();
+    setOptions(fields);
+    console.log('isArray:', Array.isArray(fields), 'typeof:', typeof fields, fields);
+  })();
+}, []);
+
+
   // отправка формы
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3001/api/contact", {
+      const response = await fetch("http://localhost:4000/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
@@ -66,25 +78,9 @@ export default function ContactForm() {
         />
       ))) :
       (
-        <>
-          <input
-            type="text"
-            name="name"
-            placeholder="Ваше имя"
-            className="border rounded p-2"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            className="border rounded p-2"
-          />
-          <textarea
-            name="message"
-            placeholder="Сообщение"
-            className="border rounded p-2"
-          />
-        </>
+        <div className="py-6">
+              <Spinner size={32} />
+            </div>
       )
       }
         <button type="submit" className="bg-blue-500 text-white p-2 rounded">

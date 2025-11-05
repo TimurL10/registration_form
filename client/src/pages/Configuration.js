@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
-import ContactForm from "./Main";
-import { useDispatch } from "react-redux";
-import { setSelected as setSelectedAction } from "./optionsSlice";
+import { useDispatch, useSelector} from "react-redux";
+import { setSelected as setSelectedAction } from "../store/optionsSlice.js";
 import { Link} from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -39,7 +38,7 @@ export default function Configuration({
   "Дата приёма на работу",
   "Тип занятости (штатный / контракт / стажёр)",
   "Уровень доступа / роль в системе",
-  "Номер пропуска / карты доступа","Личное Фото","Загрузить документ"],
+  "Номер пропуска / карты доступа","Личное Фото","Загрузить документ"],  
 
   onSubmit = (payload) => console.log("Submit payload:", payload),
 }) {
@@ -48,6 +47,16 @@ export default function Configuration({
   const [bannerFile, setBannerFile] = useState(null);
   const [clientDocFile, setClientDocFile] = useState(null);
   const [customOption, setCustomOption] = useState("");
+  const v_companyId = useSelector((state) => state.options.companyId);
+
+  const handleSave = async () => {
+    await fetch("http://localhost:4000/api/form-config", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ companyId: v_companyId, fields: selected }),
+    });
+  };
+
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -62,13 +71,19 @@ export default function Configuration({
 
   const removeSelected = (opt) => setSelected((prev) => prev.filter((x) => x !== opt));
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit({ selectedOptions: selected, bannerFile, clientDocFile });
-    console.log(selected);
-    dispatch(setSelectedAction(selected)); // сохраняем в Redux
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  console.log("handleSubmit: старт", selected);
+  try {
+    await handleSave();                        // ждём сервер
+    dispatch(setSelectedAction(selected));     // redux
     toast.success("Данные успешно отправлены!");
-  };
+    onSubmit?.({ selectedOptions: selected, bannerFile, clientDocFile });
+  } catch (err) {
+    console.error("handleSubmit error:", err);
+    toast.error("Ошибка при сохранении");
+  }
+};
 
   const handleAddCustomOption = () => {
     const opt = customOption.trim();
@@ -201,7 +216,7 @@ export default function Configuration({
               </div>
               <div className="flex items-center gap-3">
                 <button type="button" className="rounded-xl border px-4 py-2 hover:bg-gray-50">
-                    <Link to="/">Вернуться на главную</Link>
+                    <Link to="/registrationform">Посмотреть форму</Link>
                 </button>
                 <button
                   type="button"
@@ -215,7 +230,7 @@ export default function Configuration({
                   Сбросить
                 </button>
                 <button
-                  type="submit"
+                  type="submit" onClick={() => console.log('клик по submit')}
                   className="rounded-xl px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50"
                   disabled={selected.length === 0}                  
                 >
